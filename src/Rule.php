@@ -169,6 +169,7 @@ abstract class Rule
     {
         if (method_exists($this->rules, $method) || in_array($method, ['replace'])) {
             $this->rules = call_user_func_array([$this->rules, $method], $arguments);
+
             return $this;
         }
     }
