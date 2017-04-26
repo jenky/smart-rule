@@ -4,9 +4,17 @@ namespace Jenky\SmartRule;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 abstract class Rule
 {
+    /**
+     * Indicates if the constraint is guessed by the called method.
+     *
+     * @var bool
+     */
+    public $guess = true;
+
     /**
      * @var array
      */
@@ -32,7 +40,14 @@ abstract class Rule
     {
         $this->registerMacro();
         $this->constraints = $constraints;
-        $this->rules = new Collection($this->rules());
+
+        $rules = $this->rules();
+
+        if (! is_array($rules)) {
+            throw new InvalidArgumentException('Rules must be an array.');
+        }
+
+        $this->rules = new Collection($rules);
     }
 
     /**
@@ -40,10 +55,7 @@ abstract class Rule
      *
      * @return array
      */
-    protected function rules()
-    {
-        return [];
-    }
+    abstract protected function rules();
 
     /**
      * Register collection "replace" macro.
@@ -79,6 +91,31 @@ abstract class Rule
     }
 
     /**
+     * Set the constraints.
+     *
+     * @param  mixed $constraints
+     * @return $this
+     */
+    public function setConstraints($constraints)
+    {
+        $constraints = is_array($constraints) ? $constraints : func_get_args();
+
+        $this->constraints = $constraints;
+
+        return $this;
+    }
+
+    /**
+     * Get the constraints.
+     *
+     * @return array
+     */
+    public function getConstraints()
+    {
+        return $this->constraints;
+    }
+
+    /**
      * Get the validation rules.
      *
      * @return array
@@ -91,7 +128,7 @@ abstract class Rule
             }
         }
 
-        return $this->rules->toArray();
+        return $this->rules;
     }
 
     /**
