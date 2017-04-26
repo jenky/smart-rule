@@ -6,22 +6,23 @@ trait SmartRule
 {
     /**
      * Get the validation rules.
-     * TODO: add callback argurment.
      *
-     * @param  mixed $class
-     * @param  array $constraints
+     * @param  \Jenky\SmartRule\Rule $rule
+     * @param  callable|null $callback
      * @return array
      */
-    public function rules($class, array $constraints = [])
+    public function rules(Rule $rule, callable $callback = null)
     {
-        if (! $constraints) {
-            $constraints = [debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[1]['function']];
+        if (! $rule->getConstraints() && $rule->guess) {
+            $rule->setConstraints(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[1]['function']);
         }
 
-        if (is_string($class) && class_exists($class)) {
-            $class = new $class($constraints);
+        $rules = $rule->getRules();
+
+        if ($callback) {
+            $rules = $callback($rules);
         }
 
-        return $class->getRules();
+        return $rules->toArray();
     }
 }
