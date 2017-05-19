@@ -9,7 +9,7 @@ use InvalidArgumentException;
 abstract class Rule
 {
     /**
-     * Indicates if the constraint is guessed by the called method.
+     * Indicates if the preset is guessed by the called method.
      *
      * @var bool
      */
@@ -18,7 +18,7 @@ abstract class Rule
     /**
      * @var array
      */
-    protected $constraints = [];
+    protected $presets = [];
 
     /**
      * @var \Illuminate\Support\Collection
@@ -33,13 +33,13 @@ abstract class Rule
     /**
      * Create a new class instance.
      *
-     * @param  array $constraints
+     * @param  array $presets
      * @return void
      */
-    public function __construct(array $constraints = [])
+    public function __construct(array $presets = [])
     {
         $this->registerMacro();
-        $this->constraints = $constraints;
+        $this->presets = $presets;
 
         $rules = $this->rules();
 
@@ -91,28 +91,28 @@ abstract class Rule
     }
 
     /**
-     * Set the constraints.
+     * Set the presets.
      *
-     * @param  mixed $constraints
+     * @param  mixed $presets
      * @return $this
      */
-    public function setConstraints($constraints)
+    public function setPresets($presets)
     {
-        $constraints = is_array($constraints) ? $constraints : func_get_args();
+        $presets = is_array($presets) ? $presets : func_get_args();
 
-        $this->constraints = $constraints;
+        $this->constraints = $presets;
 
         return $this;
     }
 
     /**
-     * Get the constraints.
+     * Get the presets.
      *
      * @return array
      */
-    public function getConstraints()
+    public function getPresets()
     {
-        return $this->constraints;
+        return $this->presets;
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class Rule
      */
     public function getRules()
     {
-        foreach ($this->constraints as $method) {
+        foreach ($this->presets as $method) {
             if (method_exists($this, $method)) {
                 $this->{$method}();
             }
