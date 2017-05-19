@@ -13,8 +13,8 @@ trait SmartRule
      */
     public function rules(Rule $rule, callable $callback = null)
     {
-        if (! $rule->getConstraints() && $rule->guess) {
-            $rule->setConstraints(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[1]['function']);
+        if (! $rule->getPresets() && $rule->guess) {
+            $rule->setPresets(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[1]['function']);
         }
 
         $rules = $rule->getRules();
