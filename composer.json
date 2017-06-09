@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "jenky\\SmartRule\\": "src"
+            "Jenky\\SmartRule\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "jenky\\SmartRule\\": "tests"
+            "Jenky\\SmartRule\\": "tests"
         }
     },
     "scripts": {
