@@ -100,7 +100,7 @@ abstract class Rule
     {
         $presets = is_array($presets) ? $presets : func_get_args();
 
-        $this->constraints = $presets;
+        $this->presets = $presets;
 
         return $this;
     }
