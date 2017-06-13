@@ -13,7 +13,7 @@ abstract class Rule
      *
      * @var bool
      */
-    public $guess = true;
+    protected $guess = true;
 
     /**
      * @var array
@@ -56,6 +56,19 @@ abstract class Rule
      * @return array
      */
     abstract protected function rules();
+
+    /**
+     * Set the "guess" property.
+     *
+     * @param  bool $bool
+     * @return $this
+     */
+    public function guess($bool)
+    {
+        $this->guess = (bool) $bool;
+
+        return $this;
+    }
 
     /**
      * Register collection "replace" macro.
@@ -156,6 +169,21 @@ abstract class Rule
         }
 
         return new Collection($parsed);
+    }
+
+    /**
+     * Get the rules then turn it to a collection.
+     *
+     * @param  mixed $rules
+     * @return \Illuminate\Support\Collection|null
+     */
+    public function rule($key)
+    {
+        if (! $this->get($key)) {
+            return;
+        }
+
+        return $this->parseRules($this->get($key));
     }
 
     /**
