@@ -13,7 +13,7 @@ abstract class Rule
      *
      * @var bool
      */
-    protected $guess = true;
+    public $guess = true;
 
     /**
      * @var array
